@@ -1,0 +1,37 @@
+name: A18_CICD_Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build_test_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Étape demandée dans l’énoncé :
+      # Afficher contenu de /app (et fallback / si vide)
+      - name: Afficher contenu de /app
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE":/app alpine sh -c "ls -la /app || ls -la /"
+
+      # Construction de l'image Docker
+      - name: Build Docker image
+        run: |
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/A18_OmarKharrat_final_1288:latest"
+          docker build -t "$IMAGE" .
+
+      # Connexion Docker Hub
+      - name: Docker login
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      # Push vers Docker Hub
+      - name: Push image to Docker Hub
+        run: |
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/A18_OmarKharrat_final_1288:latest"
+          docker push "$IMAGE"
