@@ -22,7 +22,7 @@ jobs:
       # Construction de l'image Docker
       - name: Build Docker image
         run: |
-          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/A18_OmarKharrat_final_1288:latest"
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/a18_omarkharrat_final_1288:latest"
           docker build -t "$IMAGE" .
 
       # Connexion Docker Hub
@@ -33,5 +33,5 @@ jobs:
       # Push vers Docker Hub
       - name: Push image to Docker Hub
         run: |
-          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/A18_OmarKharrat_final_1288:latest"
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/a18_omarkharrat_final_1288:latest"
           docker push "$IMAGE"
